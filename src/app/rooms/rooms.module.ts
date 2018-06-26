@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RoomsRoutingModule } from './rooms-routing.module';
 import { RoomsComponent } from './rooms.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
+import { SafePipe } from '../shared/pipes/safe.pipe';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
   ],
   declarations: [
     RoomsComponent,
+    SafePipe,
     VideoPlayerComponent,
   ]
 })

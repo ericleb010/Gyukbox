@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+const BASE_URL = 'https://www.youtube.com/embed/';
+const PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_policy=3&start=0&enablejsapi=1&rel=0';
 
 @Component({
   selector: 'gyukbox-video-player',
@@ -11,15 +13,10 @@ export class VideoPlayerComponent implements OnInit {
   video: any;
   player: any;
   reframed = false;
+  videoUrl = this.buildYoutubeUrl('ASf25UGveBQ');
 
   constructor() { }
-  init() {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  }
-
+  
   ngOnInit() {
     this.init();
     this.video = '1cH2cerUpMQ'; // video id
@@ -35,6 +32,17 @@ export class VideoPlayerComponent implements OnInit {
         },
       });
     };
+  }
+
+  init() {
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  buildYoutubeUrl(videoId: string) {
+    return BASE_URL + videoId + PARAMS;
   }
 
   onPlayerStateChange(event) {
