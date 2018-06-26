@@ -40,13 +40,11 @@ module.exports = function (router) {
 		res.send('');
 
 		log.info(msg);
-
-		next();
 	}
 
-	router.route('/:room/add').put(make).post(make);
+	router.route('/add/:room/').put(make).post(make);
 
-	router.route('/:room/').get(function(req, res, next) {
+	router.route('/get/:room/').get(function(req, res, next) {
 		const name = req.params.room;
 
 		const msg = makeLogMsg(req);
@@ -70,14 +68,12 @@ module.exports = function (router) {
 		}
 
 		log.info(msg);
-
-		next();
 	});
 
-	router.route('/').get(function(req, res, next) {
+	router.route('/all/').get(function(req, res, next) {
 		const msg = makeLogMsg(req);
 
-		const all = rooms.all();
+		const all = rooms.list();
 
 		res.status(200);
 
