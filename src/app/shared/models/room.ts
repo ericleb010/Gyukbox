@@ -1,5 +1,5 @@
 export class Room {
-    id: string
-    readableName: string
-    activeUsers: number
-};
+    id: string;
+    readableName: string;
+    activeUsers: number;
+}
