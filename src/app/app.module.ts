@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+import { RoomSelectorComponent } from './roomSelector/room-selector.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    RoomSelectorComponent,
   ],
   imports: [
     BrowserModule,
