@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { RoomsRoutingModule } from './rooms-routing.module';
+import { RoomsRoutingModule } from './roomSelector-routing.module';
 
 @NgModule({
   imports: [
@@ -10,4 +10,4 @@ import { RoomsRoutingModule } from './rooms-routing.module';
   ],
   declarations: []
 })
-export class RoomsModule { }
+export class RoomSelectorModule { }
