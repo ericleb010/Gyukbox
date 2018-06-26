@@ -13,7 +13,7 @@ const Rooms = function Rooms () {
 			log.info(msg);
 			return true;
 		}
-		msg[status] = "FAILED";
+		msg.status = "FAILED";
 		log.info(msg);
 		return false;
 	};
@@ -24,7 +24,7 @@ const Rooms = function Rooms () {
 			log.info(msg);
 			return rooms[name];
 		}
-		msg[status] = "FAILED";
+		msg.status = "FAILED";
 		log.info(msg);
 		return;
 	}
