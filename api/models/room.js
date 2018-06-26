@@ -2,27 +2,32 @@
 
 const QueueFactory = require('./queue');
 const log = console;
-const Room = function Room () {
+const Room = function Room (name) {
 	
-	let room = [];
 	let songs = QueueFactory.new();
+	this.name = name;
 
 	this.addSong = function(obj) {
 		if (typeof obj !== 'undefined') {
 			songs.enqueue(obj);
-			log.info("Adding a song");
+			log.info("ROOM: Adding a song");
 		}
 	};
 
 	this.dropSong = function() {
 		songs.dequeue();
-		log.info("Dropping a song");
+		log.info("ROOM: Dropping a song");
 	};
+
+	this.json = function() {
+		log.info("ROOM: returning json")
+		return this;
+	}
 };
 
 const RoomFactory = function RoomFactory () {
-	this.new = function() {
-		return new Room();
+	this.new = function(name) {
+		return new Room(name);
 	};
 };
 
