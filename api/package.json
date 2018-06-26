@@ -1,0 +1,13 @@
+{
+  "name": "gyukbox-api",
+  "version": "1.0.0",
+  "description": "gyukbox api",
+  "main": "server.js",
+  "repository": "https://github.com/ericleb010/Gyukbox",
+  "author": "POEM",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
