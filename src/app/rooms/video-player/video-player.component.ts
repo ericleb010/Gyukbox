@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 
 @Component({
-  selector: 'gyukbox-test',
+  selector: 'gyukbox-video-player',
   templateUrl: './video-player.html',
   styleUrls: ['./video-player.scss'],
 })
-export class TestComponent implements OnInit {
+export class VideoPlayerComponent implements OnInit {
   YT: any;
   video: any;
   player: any;
@@ -33,21 +33,7 @@ export class TestComponent implements OnInit {
           'onStateChange': this.onPlayerStateChange.bind(this),
           'onError': this.onPlayerError.bind(this),
         },
-        config: {
-          controls: 0,
-          disablekb: 1,
-          modestbranding: 1,
-          showinfo: 0,
-          iv_load_policy: 3
-        }
       });
-      window['YT'].config = {
-        controls: 0,
-        disablekb: 1,
-        modestbranding: 1,
-        showinfo: 0,
-        iv_load_policy: 3
-      };
     };
   }
 
@@ -58,13 +44,13 @@ export class TestComponent implements OnInit {
         if (this.cleanTime() === 0) {
           console.log('started ' + this.cleanTime());
         } else {
-          console.log('playing ' + this.cleanTime())
-        };
+          console.log('playing ' + this.cleanTime());
+        }
         break;
       case window['YT'].PlayerState.PAUSED:
         if (this.player.getDuration() - this.player.getCurrentTime() !== 0) {
           console.log('paused' + ' @ ' + this.cleanTime());
-        };
+        }
         break;
       case window['YT'].PlayerState.ENDED:
         console.log('ended ');
