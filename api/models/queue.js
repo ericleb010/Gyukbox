@@ -9,7 +9,7 @@ const Queue = function Queue () {
 		let output, v, key;
 
 		output = Array.isArray(obj) ? [] : {};
-		for (key in o) {
+		for (key in obj) {
 			v = obj[key];
 			output[key] = (typeof v === 'object') ? copy(v) : v;
 		}
