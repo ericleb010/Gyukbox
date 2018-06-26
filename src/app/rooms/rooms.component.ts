@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'gyukbox-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit {
-
+export class RoomsComponent {
+  videoId: string;
+  videoAdded: Subject<string> = new Subject<string>();
+  
   constructor() { }
 
-  ngOnInit() {
+  addVideo() {
+    this.videoAdded.next(this.videoId);
   }
-
 }

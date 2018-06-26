@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { RoomsRoutingModule } from './rooms-routing.module';
@@ -9,6 +10,7 @@ import { SafePipe } from '../shared/pipes/safe.pipe';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     RoomsRoutingModule
   ],
   declarations: [

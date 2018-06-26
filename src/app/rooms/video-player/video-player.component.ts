@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 const BASE_URL = 'https://www.youtube.com/embed/';
 const PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_policy=3&start=0&enablejsapi=1&rel=0';
@@ -9,21 +10,23 @@ const PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_poli
   styleUrls: ['./video-player.scss'],
 })
 export class VideoPlayerComponent implements OnInit {
+  @Input() videoAdded: Subject<string>;
+
+  videoId = 'ASf25UGveBQ';
+
   YT: any;
   video: any;
   player: any;
-  reframed = false;
-  videoUrl = this.buildYoutubeUrl('ASf25UGveBQ');
+  videoUrl = this.buildYoutubeUrl(this.videoId);
 
   constructor() { }
-  
+
   ngOnInit() {
     this.init();
     this.video = '1cH2cerUpMQ'; // video id
 
     window['onYouTubeIframeAPIReady'] = (e) => {
       this.YT = window['YT'];
-      this.reframed = false;
       this.player = new window['YT'].Player('player', {
         videoId: this.video,
         events: {
@@ -32,6 +35,13 @@ export class VideoPlayerComponent implements OnInit {
         },
       });
     };
+
+    this.videoAdded.subscribe(videoId => {
+      this.videoId = videoId;
+      console.log(this.videoId);
+      this.player.loadVideoById(this.videoId);
+      this.player.playVideo();
+    });
   }
 
   init() {
