@@ -1,3 +1,11 @@
-<div style="text-align:center">
-  <gyukbox-video-player></gyukbox-video-player>
+<div style="text-align: center">
+  <gyukbox-video-player
+    [videoAdded]="videoAdded"
+  ></gyukbox-video-player>
 </div>
+
+<input type="text"
+  placeholder="Song"
+  [(ngModel)]="videoId"
+/>
+<button (click)="addVideo()">Add</button>
