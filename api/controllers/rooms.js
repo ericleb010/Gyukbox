@@ -1,7 +1,7 @@
 'use strict';
 
 const rooms = require('../models/rooms');
-const log = console.log;
+const log = console;
 
 module.exports = function (router) {
 

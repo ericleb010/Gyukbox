@@ -20,8 +20,15 @@ const Room = function Room (name) {
 	};
 
 	this.json = function() {
-		log.info("ROOM: returning json")
-		return this;
+		log.info("ROOM: returning json");
+		let room = { 
+			Room : {
+				id : this.name,
+				readableName : this.name,
+				activeUsers : 0
+			}
+		}; 
+		return room;
 	}
 };
 
