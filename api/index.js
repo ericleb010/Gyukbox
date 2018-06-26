@@ -1,12 +1,11 @@
 'use strict';
 
 const express = require('express');
-
 const log = console.log;
-
 const app = express();
-
 const router = express.Router();
+
+const rooms = require('./controllers/rooms');
 
 router.get('/', function (req, res, next) {
 	res.send('Hello World!')
@@ -14,7 +13,9 @@ router.get('/', function (req, res, next) {
 	next();
 });
 
-app.use(router);
+router.use('/rooms/', rooms(router));
+
+app.use('/api/', router);
 
 const reject = function (req, res, next) {
 	res.invalidMethod();
