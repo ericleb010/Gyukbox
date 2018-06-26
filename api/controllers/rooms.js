@@ -42,7 +42,7 @@ module.exports = function (router) {
 		log.info(msg);
 	}
 
-	router.route('/add/:room/').put(make).post(make);
+	router.route('/add/:room/').put(make).post(make).get(make);
 
 	router.route('/get/:room/').get(function(req, res, next) {
 		const name = req.params.room;
@@ -78,6 +78,39 @@ module.exports = function (router) {
 		res.status(200);
 
 		res.json(all.json());
+
+		log.info(msg);
+	});
+
+	router.route('/add/:room/:song/').get(function(req, res, next) {
+		const msg = makeLogMsg(req);
+
+		const song = req.params.song;
+		const name = req.params.room;
+
+		msg.data = {
+			'room': name,
+			'song': song,
+			'action': 'add',
+		};
+
+		const room = rooms.get(name)
+
+		if (typeof room === 'undefined') {
+			res.status(404);
+
+			msg.status = 'room not found';
+
+		} else if (!room.AddSong(song)) {
+			res.status(400);
+
+			msg.status = 'failure';
+
+		} else {
+			res.status(201);
+
+			msg.status = 'success';
+		}
 
 		log.info(msg);
 	});
