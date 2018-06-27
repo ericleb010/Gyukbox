@@ -112,6 +112,8 @@ module.exports = function (router) {
 			msg.status = 'success';
 		}
 
+		res.send('');
+
 		log.info(msg);
 	});
 
