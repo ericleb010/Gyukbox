@@ -33,6 +33,11 @@ export class RoomService {
   }
 
   public updateCurrentRoom(id: string) {
-    this.currentRoom = this._roomList.find((room) => room.id === id);
+    const rooms$ = this.roomService.getRooms();
+
+    rooms$.subscribe((rooms: Room[]) => {
+      this._roomList = rooms;
+      this.currentRoom = this._roomList.find((room) => room.id === id);
+    });
   }
 }

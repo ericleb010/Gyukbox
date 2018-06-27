@@ -1,5 +1,5 @@
 <div id="roomSelectorRadioButtonsGroup">
     <div id="room-{{room.id}}" class="button" *ngFor="let room of rooms" (click)="chooseRoom($event, room.id)">
-        {{room.readableName}}
+        <span class="background-text">{{room.readableName}}</span>
     </div>
 </div>

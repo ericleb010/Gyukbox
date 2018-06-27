@@ -1,11 +1,11 @@
-<h3>{{currentRoom.readableName}}</h3>
+<h2 class="background-text">Room: {{currentRoom.readableName | uppercase}}</h2>
 
 <div style="text-align: center">
   <gyukbox-video-player
     [videoAdded]="videoAdded"
   ></gyukbox-video-player>
   <div>
-    {{'Now Playing: ' + videoTitle}}
+    <span class="background-text">{{'Now Playing: ' + videoTitle}}</span>
   </div>
 </div>
 
