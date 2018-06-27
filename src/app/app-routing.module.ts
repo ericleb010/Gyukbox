@@ -3,9 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'selectRoom',
+    loadChildren: 'app/roomSelector/roomSelector.module#RoomSelectorModule'
+  },
+  {
     path: 'rooms',
     loadChildren: 'app/rooms/rooms.module#RoomsModule'
   },
+  {
+    path: '',
+    redirectTo: '/selectRoom',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

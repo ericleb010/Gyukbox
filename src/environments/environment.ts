@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiHost: '10.6.20.127',
+  apiHost: '10.6.20.88',
   apiPort: 8080,
   apiKey: 'AIzaSyASPduXfJQme92OiseCGa5BCPHM6MuRb3s'
 };
