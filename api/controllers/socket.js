@@ -18,6 +18,11 @@ module.exports = function (server) {
 
 			room = rooms.get(data.room);
 
+			// default to lobby
+			if (typeof room === 'undefined') {
+				room = rooms.get('Lobby');
+			}
+
 			room.addUser(client);
 		});
 
