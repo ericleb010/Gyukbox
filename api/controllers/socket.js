@@ -84,7 +84,7 @@ module.exports = function (server) {
 	};
 
 	io.on('connect', function (client) {
-		log.info({'route':'socket','action':'connect','data':client});
+		log.info({'route':'socket','action':'connect','data':client.id});
 
 		let room;
 
