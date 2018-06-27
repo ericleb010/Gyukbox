@@ -94,7 +94,7 @@ module.exports = function (router) {
 			'action': 'add',
 		};
 
-		const room = rooms.get(name)
+		const room = rooms.get(name);
 
 		if (typeof room === 'undefined') {
 			res.status(404);
@@ -111,6 +111,45 @@ module.exports = function (router) {
 
 			msg.status = 'success';
 		}
+
+		log.info(msg);
+	});
+
+	router.route('/get/:room/next').get(function (req, res, next) {
+		const msg = makeLogMsg(req);
+
+		const name = req.params.room;
+
+		msg.data = {
+			'room': room,
+		};
+
+		const room = rooms.get(name);
+
+		if (typeof room === 'undefined') {
+			res.status(404);
+
+			msg.status = 'room not found';
+
+			log.info(msg);
+
+			return;
+		}
+
+		const song = room.nextSong();
+
+		if (typeof song === 'undefined') {
+			res.status(204);
+
+			msg.status = 'no more queued songs';
+
+			log.info(msg);
+
+			return;
+		}
+
+		res.status(200);
+		res.json(song);
 
 		log.info(msg);
 	});
