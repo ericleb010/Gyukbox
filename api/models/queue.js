@@ -39,7 +39,9 @@ const Queue = function Queue () {
 	}
 
 	this.list = function () {
-		return copy(queue);
+		//return copy(queue);
+		const q = queue;
+		return q;
 	};
 };
 

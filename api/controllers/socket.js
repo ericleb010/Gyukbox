@@ -40,12 +40,34 @@ module.exports = function (server) {
 		log.debug(msg);
 
 		room.userList().forEach(function(client) {
-			log.info("TEST");
+			const msg = {
+				'route':'socket',
+				'action':'play send',
+				'room':room.name,
+				'user':client.id,
+			};
+
+			msg.status = 'send';
+			log.debug(msg);
+
 			client.emit('play', song);
+
+			log.debug("holy shitbuckets");
+
+			msg.status = 'success';
+			log.debug(msg);
 		});
 
 		room.timer = setTimeout(function () {
 			room.timer = undefined;
+
+			const msg = {
+				'route':'socket',
+				'action':'timer hit',
+				'room':room.name,
+			};
+
+			log.info(msg);
 
 			doTimer(room);
 		}, song.songLength);
@@ -55,6 +77,12 @@ module.exports = function (server) {
 		log.info(msg);
 
 		return;
+	};
+
+	const emitQueue = function(room, client) {
+		const queue = room.json();
+
+		client.emit('queue', queue);
 	};
 
 	io.on('connect', function (client) {
@@ -77,32 +105,32 @@ module.exports = function (server) {
 			}
 
 			room.addUser(client);
-			
-			io.emit('chatList', room.chatList());
+
+			client.emit('chatList', room.chatList());
+
+			emitQueue(room, client);
 		});
 
 		client.on('addSong', function (data) {
 			log.info({'route':'socket','action':'addSong','data':data});
 
-			if (typeof room !== 'undefined') {
-				room.addSong(client, data);
-
-				doTimer(room);
+			if (typeof room === 'undefined') {
+				return;
 			}
-		});
 
-		client.on('nextSong', function (data) {
-			log.info({'route':'socket','action':'nextSong','data':data});
-
-			io.emit('nextSong', room.nextSong());
+			room.addSong(client, data);
+			emitQueue(room, client);
+			doTimer(room);
 		});
 
 		client.on('disconnect', function(data) {
 			log.info({'route':'socket','action':'disconnect','data':data});
 
 			if (typeof room !== 'undefined') {
-				room.removeUser(client);
+				return;
 			}
+
+			room.removeUser(client);
 		});
 
 		client.on('addChatMsg', function (data) {
