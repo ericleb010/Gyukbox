@@ -1,11 +1,15 @@
-<h2 class="background-text" *ngIf="currentRoom">Room: {{currentRoom.readableName | uppercase}}</h2>
+<div class="background-text">
+  <h2><a href="/selectRoom">&lt; Back</a></h2>
+  <h2 *ngIf="currentRoom">Room: {{currentRoom.readableName | uppercase}}</h2>
+</div>
 
 <div style="text-align: center">
   <gyukbox-video-player
     [playNext]="playNext"
   ></gyukbox-video-player>
-  <div>
-    <span class="background-text">{{'Now Playing: ' + videoTitle}}</span>
+  <div class="background-text">
+    <h3>Now Playing:</h3>
+    <h2>{{videoTitle}}</h2>
   </div>
 </div>
 

@@ -15,7 +15,7 @@ import { Action } from '../shared/models/socketEvents';
 export class RoomsComponent implements OnInit {
   videoId: string;
   playNext: Subject<string> = new Subject<string>();
-  videoTitle = '';
+  videoTitle = '--';
   currentRoom: Room;
   roomUpdate: Subject<Room[]>;
 
@@ -61,8 +61,6 @@ export class RoomsComponent implements OnInit {
 
   addVideo() {
     this.youtubeService.getVideoDetails(this.videoId).subscribe(videoDetails => {
-      console.log("Video details:");
-      console.log(videoDetails);
       this.videoTitle = this.youtubeService.getVideoTitle(videoDetails);
       console.log(`DURATION: ${this.youtubeService.getVideoLength(videoDetails)}`);
       const songData = {
