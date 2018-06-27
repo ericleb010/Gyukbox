@@ -123,7 +123,7 @@ module.exports = function (router) {
 		const name = req.params.room;
 
 		msg.data = {
-			'room': room,
+			'room': name,
 		};
 
 		const room = rooms.get(name);
