@@ -46,5 +46,7 @@ const Rooms = function Rooms () {
 
 const self = new Rooms();
 self.add("Lobby");
+self.add("Icebox_360");
+self.add("Dungeon");
 
 module.exports = self;

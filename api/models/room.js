@@ -48,8 +48,9 @@ const Room = function Room (name) {
 
 	this.songList = function() {
 		let msg = {ROOM: "Listing all songs",	status: "success"};
-		songs.list();
+		let songList = songs.list();
 		log.info(msg);
+		return songList;
 	}
 
 	this.addUser = function(user) {
@@ -77,8 +78,9 @@ const Room = function Room (name) {
 
 	this.userList = function() {
 		let msg = {ROOM: "Listing all users",	status: "success"};
-		users.list();
+		let userList = users.list();
 		log.info(msg);
+		return userList;
 	}
 
 	this.json = function() {
