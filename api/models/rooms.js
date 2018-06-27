@@ -45,5 +45,6 @@ const Rooms = function Rooms () {
 }
 
 const self = new Rooms();
+self.add("Lobby");
 
 module.exports = self;
