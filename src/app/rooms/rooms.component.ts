@@ -85,6 +85,22 @@ export class RoomsComponent implements OnInit, OnDestroy {
     });
   }
 
+  playerLoaded() {
+    console.log("LOADED");
+    this.socketService.initSocket();
+    this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
+
+    this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
+      console.log(data);
+      if (data.songId && data.offset !== undefined) {
+        this.playNext.next({
+          songId: data.songId,
+          offset: data.offset
+        });
+      }
+    });
+  }
+
   openSearch() {
     this.searchOpen = true;
   }

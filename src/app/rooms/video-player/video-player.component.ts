@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { YoutubeService } from '../services/youtube.service';
 
@@ -12,6 +12,7 @@ const PLAYERS_PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_l
 })
 export class VideoPlayerComponent implements OnInit {
   @Input() playNext: Subject<{ songId: string, offset: number }>;
+  @Output() playerLoaded = new EventEmitter<boolean>();
 
   videoId = '8tPnX7OPo0Q';
   offset = 0;
@@ -19,6 +20,7 @@ export class VideoPlayerComponent implements OnInit {
   video: any;
   player: any;
   videoUrl = this.buildYoutubePlayerUrl(this.videoId, this.offset);
+  apiReady = false;
 
   constructor() { }
 
@@ -29,6 +31,7 @@ export class VideoPlayerComponent implements OnInit {
       this.YT = window['YT'];
       this.player = new window['YT'].Player('player', {
         events: {
+          'onReady': this.playerLoaded.emit(true),
           'onStateChange': this.onPlayerStateChange.bind(this),
           'onError': this.onPlayerError.bind(this),
         },
@@ -36,13 +39,15 @@ export class VideoPlayerComponent implements OnInit {
     };
 
     this.playNext.subscribe(video => {
+      console.log(video);
       this.videoId = video.songId;
       this.offset = video.offset;
-      this.player.loadVideoById(this.videoId);
       setTimeout(() => {
+        this.player.loadVideoById(this.videoId);
         this.player.playVideo();
-      });
+      }, 1000);
     });
+
   }
 
   init() {
