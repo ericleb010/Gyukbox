@@ -16,6 +16,10 @@ module.exports = function (server) {
 		client.on('join', function (data) {
 		 	log.info({'route':'socket','action':'join','data':data});
 
+			if (typeof room !== 'undefined') {
+				room.removeUser(client);
+			}
+
 			room = rooms.get(data.room);
 
 			// default to lobby
