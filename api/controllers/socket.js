@@ -1,6 +1,6 @@
 'use strict';
 
-const log = console.log;
+const log = console;
 const socketio = require('socket.io');
 const rooms = require('../models/rooms');
 
