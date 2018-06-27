@@ -7,12 +7,14 @@ const Room = function Room (name) {
 	let songs = QueueFactory.new();
 	this.name = name;
 
-	this.addSong = function(obj) {
-		let msg = {ROOM: "Adding a song " + name,	status: "success"};
-		if (typeof obj !== 'undefined') {
-			songs.enqueue(obj);
+	this.addSong = function(song) {
+		let msg = {ROOM: "Adding a song " + song, room: name,	status: "success"};
+		if (typeof song !== 'undefined') {
 			log.info(msg);
+			songs.enqueue(song);
+			return true;
 		}
+		return false;
 	};
 
 	this.nextSong = function() {
