@@ -52,8 +52,6 @@ module.exports = function (server) {
 
 			client.emit('play', song);
 
-			log.debug("holy shitbuckets");
-
 			msg.status = 'success';
 			log.debug(msg);
 		});
