@@ -86,7 +86,7 @@ const Room = function Room (name) {
 		let room = { 
 			id : this.name,
 			readableName : this.name,
-			activeUsers : 0
+			activeUsers : users.count()
 		}; 
 		return room;
 	}
