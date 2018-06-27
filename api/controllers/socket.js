@@ -27,6 +27,12 @@ module.exports = function (server) {
 			room.addSong(data);
 		});
 
+		client.on('nextSong', function (data) {
+			log.info({'route':'socket','action':'nextSong','data':data});
+
+			io.emit('nextSong', {});
+		});
+
 		client.on('disconnect', function(data) {
 			log.info({'route':'socket','action':'disconnect','data':data});
 
