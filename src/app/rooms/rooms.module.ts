@@ -24,7 +24,6 @@ import { SocketService } from './services/socket.service';
     VideoPlayerComponent,
   ],
   providers: [
-    ActivatedRoute,
     SocketService,
     YoutubeService,
   ]

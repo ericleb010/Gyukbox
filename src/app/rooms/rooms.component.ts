@@ -4,13 +4,14 @@ import { Subject } from 'rxjs/Subject';
 import { Room } from '../shared/models';
 import { RoomService } from '../shared/services/room.service';
 import { YoutubeService } from './services/youtube.service';
+import { SocketService } from './services/socket.service';
 
 @Component({
   selector: 'gyukbox-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent {
+export class RoomsComponent implements OnInit {
   videoId: string;
   videoAdded: Subject<string> = new Subject<string>();
   videoTitle = '';
@@ -18,6 +19,7 @@ export class RoomsComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private socketService: SocketService,
     private roomService: RoomService,
     private youtubeService: YoutubeService,
   ) {
@@ -26,11 +28,17 @@ export class RoomsComponent {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.initializeSocket();
+  }
 
   addVideo() {
     this.videoAdded.next(this.videoId);
     this.updateTitle();
+  }
+
+  initializeSocket() {
+    this.socketService.initSocket();
   }
 
   private updateTitle() {
