@@ -1,6 +1,6 @@
 'use strict';
 
-const log = console.log;
+const log = console;
 const socketio = require('socket.io');
 const rooms = require('../models/rooms');
 
@@ -30,7 +30,7 @@ module.exports = function (server) {
 		client.on('nextSong', function (data) {
 			log.info({'route':'socket','action':'nextSong','data':data});
 
-			io.emit('nextSong', {});
+			io.emit('nextSong', room.nextSong());
 		});
 
 		client.on('disconnect', function(data) {
