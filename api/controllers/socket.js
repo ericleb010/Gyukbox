@@ -3,6 +3,7 @@
 const log = console;
 const socketio = require('socket.io');
 const rooms = require('../models/rooms');
+const _ = require('lodash');
 
 module.exports = function (server) {
 
@@ -15,8 +16,9 @@ module.exports = function (server) {
 			'room': room.name,
 		};
 
-		if (typeof room.timer !== 'undefined') {
-			msg.status = 'timer undefined';
+		if (typeof room.playing !== 'undefined') {
+			msg.status = 'currently playing';
+			msg.song = room.playing.song;
 
 			log.debug(msg);
 
@@ -32,6 +34,11 @@ module.exports = function (server) {
 			return;
 		}
 
+		room.playing = {
+			'start' : (new Date).getTime(),
+			'song' : song,
+		};
+
 		msg.song = song;
 		msg.nextIn = song.songLength;
 
@@ -41,8 +48,8 @@ module.exports = function (server) {
 
 		io.to(room.name).emit('play', song);
 
-		room.timer = setTimeout(function () {
-			room.timer = undefined;
+		room.playing.timer = setTimeout(function () {
+			room.playing = undefined;
 
 			const msg = {
 				'route':'socket',
@@ -92,6 +99,15 @@ module.exports = function (server) {
 
 			client.emit('chatList', room.chatList());
 			emitQueue(room, client);
+
+			// send back video to start playing
+			if (typeof room.playing !== 'undefined') {
+
+				const song = _.cloneDeep(room.playing.song);
+				song.offset = (new Date).getTime() - room.playing.start;
+
+				client.emit('play', song);
+			}
 		});
 
 		client.on('addSong', function (data) {

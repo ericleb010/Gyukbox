@@ -11,7 +11,7 @@ const Room = function Room (name) {
 	let userSongs = {};
 	let songUsers = {};
 	this.name = name;
-	this.timer = undefined;
+	this.playing = undefined;
 
 	const trackSongUser = function(song, user) {
 		userSongs[user] = song;
