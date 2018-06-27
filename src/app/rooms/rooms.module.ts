@@ -10,6 +10,7 @@ import { SafePipe } from '../shared/pipes/safe.pipe';
 import { YoutubeService } from './services/youtube.service';
 import { SocketService } from './services/socket.service';
 import { ChatAppletComponent } from './chat-applet/chat-applet.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { ChatAppletComponent } from './chat-applet/chat-applet.component';
     SafePipe,
     VideoPlayerComponent,
     ChatAppletComponent,
+    SearchComponent,
   ],
   providers: [
     SocketService,

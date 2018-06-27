@@ -17,8 +17,6 @@
   </div>
 </div>
 
-<input type="text"
-  placeholder="Song"
-  [(ngModel)]="videoId"
-/>
-<button (click)="addVideo()">Add</button>
+<button (click)="openSearch()">Add Song</button>
+
+<gyukbox-search *ngIf="searchOpen" (songAdded)="addVideo($event)"></gyukbox-search>

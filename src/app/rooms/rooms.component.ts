@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { Room } from '../shared/models';
@@ -12,23 +12,24 @@ import { Action } from '../shared/models/socketEvents';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, OnDestroy {
   videoId: string;
   playNext: Subject<{ songId: string, offset: number }> = new Subject<{ songId: string, offset: number }>();
   videoTitle = '--';
   currentRoom: Room;
   roomUpdate: Subject<Room[]>;
+  searchOpen = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private socketService: SocketService,
     private roomService: RoomService,
     private youtubeService: YoutubeService,
+    private renderer: Renderer2,
   ) {
+    this.renderer.addClass(document.body, 'gyukbox');
 
     this.activatedRoute.params.forEach((parameters: Params) => {
-      console.log(parameters);
-
       const rooms$ = this.roomService.updateCurrentRoom(parameters['id']);
       if (this.roomService.currentRoomList === undefined) {
         rooms$.subscribe(() => {
@@ -36,7 +37,6 @@ export class RoomsComponent implements OnInit {
           this.currentRoom = this.roomService.currentRoom;
         });
 
-        console.log(rooms$);
         rooms$.connect();
       } else {
         this.currentRoom = this.roomService.currentRoom;
@@ -62,10 +62,16 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  addVideo() {
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'gyukbox');
+  }
+
+  addVideo(event: string) {
+    this.searchOpen = false;
+    this.videoId = event;
+
     this.youtubeService.getVideoDetails(this.videoId).subscribe(videoDetails => {
       this.videoTitle = this.youtubeService.getVideoTitle(videoDetails);
-      console.log(`DURATION: ${this.youtubeService.getVideoLength(videoDetails)}`);
       const songData = {
         songId: this.videoId,
         songTitle: this.videoTitle,
@@ -74,6 +80,10 @@ export class RoomsComponent implements OnInit {
       };
       this.socketService.send(Action.ADD_SONG, songData);
     });
+  }
+  
+  openSearch() {
+    this.searchOpen = true;
   }
 
   private initializeSocket() {

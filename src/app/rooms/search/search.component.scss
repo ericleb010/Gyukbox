@@ -1,0 +1,37 @@
+.search-overlay {
+    background-color: #dfdfdf;
+    width: 50%;
+    height: 400px;
+    position: absolute;
+    overflow: scroll;
+    top: 10%;
+    left: 25%;
+    .search-box {
+        background-color: #4a4a4a;
+        height: 30px;
+        input {
+            margin-left: 30px;
+            margin-top: 5px;
+        }
+    }
+    .search-results {
+        ul {
+            list-style: none;
+            font-size: 1em;
+            li {
+                display: inline-block;
+                padding-bottom: 0.8em;
+                img {
+                    vertical-align: middle;
+                }
+                span.title {
+                    width: 400px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    display: inline-block;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+}

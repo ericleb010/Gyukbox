@@ -1,9 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-image: url(assets/images/gyukbox.jpg);
+    background-image: url(assets/images/logobg3.jpg);
     background-position-x: center;
     background-repeat: no-repeat;
     background-color: black;
+    font-family: 'roboto';
+    &.gyukbox {
+        background-image: url(assets/images/gyukbox.jpg);
+    }
 }
 
 .background-text {

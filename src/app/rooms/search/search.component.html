@@ -1,0 +1,19 @@
+<div class="search-overlay">
+  <div class="search-box">
+    <input type="text"
+    placeholder="Search"
+    [(ngModel)]="searchString"
+    />
+    <button (click)="search()">Search</button>
+  </div>
+  <div class="search-results">
+    <ul>
+      <li *ngFor="let result of searchResults.items">
+        <img src={{result?.snippet?.thumbnails?.default?.url}}/>
+        <span class="title">{{result?.snippet?.title}}</span>
+        <span class="length">{{result?.snippet?.contentDetails?.duration}}</span>
+        <button (click)=addSong(result?.id?.videoId)>Add to Queue</button>
+      </li>
+    </ul>
+  </div>
+</div>

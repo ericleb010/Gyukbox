@@ -6,8 +6,9 @@ import { environment } from '../../../environments/environment';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-const API_BASE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/';
 const API_PARAMS = '&part=snippet%2CcontentDetails%2Cstatistics&key=';
+const SEARCH_PARAMS = '&maxResults=10&type=video&part=snippet&key=';
 
 @Injectable()
 export class YoutubeService {
@@ -27,7 +28,11 @@ export class YoutubeService {
     return moment.duration(duration).asMilliseconds();
   }
 
-  private buildYoutubeAPIUrl(videoId: string) {
-    return API_BASE_URL + videoId + API_PARAMS + environment.apiKey;
+  search(searchString: string) {
+    return this.http.get<any>(this.buildYoutubeAPIUrl(searchString, false));
+  }
+
+  private buildYoutubeAPIUrl(param: string, getDetails = true) {
+    return BASE_URL + (getDetails ? 'videos?id=' : 'search?q=') + param + (getDetails ? API_PARAMS : SEARCH_PARAMS) + environment.apiKey;
   }
 }
