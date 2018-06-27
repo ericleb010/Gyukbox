@@ -37,6 +37,14 @@ const Queue = function Queue () {
 		return queue.length;
 	};
 
+	this.remove = function (obj) {
+		if (typeof obj !== 'undefined' && queue.indexOf(obj) >= 0) {
+			queue.splice(queue.indexOf(obj),1);
+			return obj;
+		}
+		return;
+	}
+
 	this.list = function () {
 		return copy(queue);
 	};

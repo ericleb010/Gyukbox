@@ -9,6 +9,7 @@ import { RoomsComponent } from './rooms.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { YoutubeService } from './services/youtube.service';
+import { SocketService } from './services/socket.service';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { YoutubeService } from './services/youtube.service';
   ],
   providers: [
     ActivatedRoute,
+    SocketService,
     YoutubeService,
   ]
 })

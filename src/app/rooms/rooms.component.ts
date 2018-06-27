@@ -10,7 +10,7 @@ import { YoutubeService } from './services/youtube.service';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent {
   videoId: string;
   videoAdded: Subject<string> = new Subject<string>();
   videoTitle = '';
