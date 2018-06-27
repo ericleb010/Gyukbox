@@ -103,8 +103,9 @@ module.exports = function (server) {
 			}
 
 			room.addUser(client);
+			client.join(room.name);
 
-			client.emit('chatList', room.chatList());
+			client.broadcast.to(room.name).emit('chatList', room.chatList());
 
 			emitQueue(room, client);
 		});
@@ -129,6 +130,7 @@ module.exports = function (server) {
 			}
 
 			room.removeUser(client);
+			client.leave(room.name);
 		});
 
 		client.on('addChatMsg', function (data) {
@@ -140,7 +142,7 @@ module.exports = function (server) {
 
 			room.addChatMsg(data);
 
-			io.emit('chatList', room.chatList());
+			client.broadcast.to(room.name).emit('chatList', room.chatList());
 		});
 	});
 };
