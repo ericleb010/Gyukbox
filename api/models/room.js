@@ -11,12 +11,29 @@ const Room = function Room (name) {
 	let chat = QueueFactory.new();
 	let userSongs = {};
 	let songUsers = {};
+	let songDownvotes = {};
 	this.name = name;
 	this.playing = undefined;
 
 	const trackSongUser = function(song, user) {
 		userSongs[user] = song;
 		songUsers[song] = user;
+	}
+
+	const songDownvotable = function(song, user) {
+		let msg;
+		if (typeof user === 'undefined') {
+			msg = "user undefined";
+		} else if (typeof song === 'undefined') {
+			msg = "song undefined";
+		} else if (!users.has(user)) {
+			msg = "User is not part of room";
+		} else if (!songs.has(song)) {
+			msg = "Song is not queue in this room";
+		} else if (typeof songDownvotes[song] !== 'undefined' && songDownvotes[song].indexOf(user) >= 0) {
+			msg = "User has already downvoted song";
+		}
+		return msg;
 	}
 
 	const untrackSongUser = function(song) {
@@ -26,6 +43,9 @@ const Room = function Room (name) {
 			delete songUsers[song];
 			if (typeof userSongs[user] !== 'undefined') {
 				delete userSongs[user];
+			}
+			if (typeof songDownvotes[song] !== 'undefined') {
+				delete songDownvotes[song];
 			}
 		}
 	}
@@ -70,6 +90,30 @@ const Room = function Room (name) {
 		log.info(msg);
 		return song;
 	};
+
+	this.downvote = function(user, song) {
+		let msg = {ROOM: "Downvoting a song " + song, room: name, user: user.id, status: "success"};
+
+		let err = songDownvotable(user, song);
+
+		if (typeof err !== 'undefined') {
+			msg.msg = err;
+			msg.status = "FAILED";
+			log.info(msg);
+			return false;
+		}
+		if (typeof songDownvotes[song] === 'undefined') {
+			songDownvotes[song] = [];
+		}
+		songDownvotes[song].push(user);
+		log.info(msg);
+
+		if (songDownvotes[song].length() >= 2) {
+			this.removeSong(song);
+		}
+		log.info({ROOM: "Removing downvoted song", room: name, user: user.id, status: "success"});
+		return true;
+	}
 
 	this.dropSong = function() {
 		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
