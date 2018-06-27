@@ -90,8 +90,7 @@ module.exports = function (server) {
 			room.addUser(client);
 			client.join(room.name);
 
-			client.broadcast.to(room.name).emit('chatList', room.chatList());
-
+			client.emit('chatList', room.chatList());
 			emitQueue(room, client);
 		});
 
