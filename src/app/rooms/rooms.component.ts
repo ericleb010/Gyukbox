@@ -16,6 +16,7 @@ export class RoomsComponent implements OnInit {
   videoAdded: Subject<string> = new Subject<string>();
   videoTitle = '';
   currentRoom: Room;
+  roomUpdate: Subject<Room[]>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -24,16 +25,27 @@ export class RoomsComponent implements OnInit {
     private youtubeService: YoutubeService,
   ) {
 
-    this.currentRoom = this.roomService.currentRoom;
+    this.activatedRoute.params.forEach((parameters: Params) => {
+      console.log(parameters);
+
+      const rooms$ = this.roomService.updateCurrentRoom(parameters['id']);
+      if (this.roomService.currentRoomList === undefined) {
+        rooms$.subscribe(() => {
+          console.log('currentRoom: ' + this.roomService.currentRoom);
+          this.currentRoom = this.roomService.currentRoom;
+        });
+
+        console.log(rooms$);
+        rooms$.connect();
+      } else {
+        this.currentRoom = this.roomService.currentRoom;
+      }
+    });
+
   }
 
   ngOnInit() {
     this.initializeSocket();
-
-    this.activatedRoute.params.forEach((parameters: Params) => {
-      console.log(parameters);
-      this.roomService.updateCurrentRoom(parameters['id']);
-    });
   }
 
   addVideo() {

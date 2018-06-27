@@ -26,6 +26,7 @@ export class RoomSelectorComponent implements OnInit {
       console.log(JSON.stringify(rooms));
       this.rooms = rooms;
     });
+    rooms$.connect();
   }
 
   public chooseRoom = function(event, id: string) {
