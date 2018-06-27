@@ -33,7 +33,7 @@ const Room = function Room (name) {
 	this.addSong = function(user, song) {
 		let msg = {ROOM: "Adding a song " + song, room: name, user: user.id,	status: "success"};
 
-		if (typeof user !== 'undefined' && typeof song !== 'undefined') { //&& typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
+		if (typeof user !== 'undefined' && typeof song !== 'undefined' && typeof userSongs[user] === 'undefined' && typeof songUsers[song.songId] === 'undefined') {
 			if (song.songLength > MAX_SONG_LENGTH_MS) {
 				msg.msg = 'song too long';
 				msg.status='FAILED';
@@ -41,7 +41,7 @@ const Room = function Room (name) {
 				return false;
 			}
 
-			trackSongUser(song, user);
+			trackSongUser(song.songId, user);
 			songs.enqueue(song);
 			log.info(msg);
 			return true;
@@ -71,7 +71,7 @@ const Room = function Room (name) {
 	this.dropSong = function() {
 		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
 		let song = songs.dequeue();
-		untrackSongUser(song);
+		untrackSongUser(song.songId);
 		log.info(msg);
 		return song;
 	};
@@ -79,7 +79,7 @@ const Room = function Room (name) {
 	this.removeSong = function(song) {
 		let msg = {ROOM: "Removing a song " + song, room: name,	status: "success"};
 		if (typeof song !== 'undefined' && typeof songs.remove(song) !== 'undefined') {
-			untrackSongUser(song);
+			untrackSongUser(song.songId);
 			log.info(msg);
 			return true;
 		}
