@@ -30,35 +30,38 @@ const Room = function Room (name) {
 		}
 	}
 
+	const songUntrackable = function(user, song) {
+		let msg;
+		if (typeof user === 'undefined') {
+			msg = "user undefined";
+		} else if (typeof song === 'undefined') {
+			msg = "song undefined";
+		} else if (typeof userSongs[user] !== 'undefined') {
+			msg = "user already has a song queued";
+		} else if (typeof songUsers[song.songId] !== 'undefined') {
+			msg = "song has already been queued";
+		} else if (song.songLength > MAX_SONG_LENGTH_MS) {
+			msg = 'song too long';
+		}
+		return msg;
+	}
+
 	this.addSong = function(user, song) {
 		let msg = {ROOM: "Adding a song " + song, room: name, user: user.id,	status: "success"};
 
-		if (typeof user !== 'undefined' && typeof song !== 'undefined' && typeof userSongs[user] === 'undefined' && typeof songUsers[song.songId] === 'undefined') {
-			if (song.songLength > MAX_SONG_LENGTH_MS) {
-				msg.msg = 'song too long';
-				msg.status='FAILED';
+		let err = songUntrackable(user, song);
 
-				return false;
-			}
-
-			trackSongUser(song.songId, user);
-			songs.enqueue(song);
+		if (typeof err !== 'undefined') {
+			msg.msg = err;
+			msg.status = "FAILED";
 			log.info(msg);
-			return true;
+			return false;
 		}
-		if (typeof user === 'undefined') {
-			msg.msg = "user undefined";
-		} else if (typeof song === 'undefined') {
-			msg.msg = "song undefined";
-		} else if (typeof userSongs[user] !== 'undefined') {
-			msg.msg = "user already has a song queued";
-		} else if (typeof songUsers[song] !== 'undefined') {
-			msg.msg = "song has already been queued";
-		}
-		msg.status = "FAILED";
+		trackSongUser(song.songId, user);
+		songs.enqueue(song);
 		log.info(msg);
-		return false;
-	};
+		return true;
+};
 
 	this.nextSong = function() {
 		let msg = {ROOM: "Returning next song " + name,	status: "success"};
@@ -71,7 +74,9 @@ const Room = function Room (name) {
 	this.dropSong = function() {
 		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
 		let song = songs.dequeue();
-		untrackSongUser(song.songId);
+		if (typeof song !== 'undefined') {
+			untrackSongUser(song.songId);
+		}
 		log.info(msg);
 		return song;
 	};
