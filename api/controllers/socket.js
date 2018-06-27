@@ -23,7 +23,7 @@ module.exports = function (server) {
 			return;
 		}
 
-		song = room.dropSong();
+		const song = room.dropSong();
 		if (typeof song === 'undefined') {
 			msg.status = 'no songs queued';
 
