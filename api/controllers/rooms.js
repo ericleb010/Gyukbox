@@ -129,7 +129,7 @@ module.exports = function (router) {
 		const room = rooms.get(name);
 
 		if (typeof room === 'undefined') {
-			res.status(404);
+			res.status(404).send('');
 
 			msg.status = 'room not found';
 
@@ -141,7 +141,7 @@ module.exports = function (router) {
 		const song = room.nextSong();
 
 		if (typeof song === 'undefined') {
-			res.status(204);
+			res.status(204).send('');
 
 			msg.status = 'no more queued songs';
 
@@ -155,8 +155,6 @@ module.exports = function (router) {
 
 		log.info(msg);
 	});
-
-	
 
 	return router;
 }
