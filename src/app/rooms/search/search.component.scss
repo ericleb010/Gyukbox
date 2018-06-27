@@ -6,6 +6,23 @@
     overflow: scroll;
     top: 10%;
     left: 25%;
+
+    &#slide {
+        position: absolute;
+        -webkit-animation: slide 0.5s forwards;
+        -webkit-animation-delay: 2s;
+        animation: slide 0.5s forwards;
+        animation-delay: 2s;
+    }
+    
+    @-webkit-keyframes slide {
+        100% { top: -500; }
+    }
+    
+    @keyframes slide {
+        100% { top: -500; }
+    }
+
     .search-box {
         background-color: #4a4a4a;
         height: 30px;

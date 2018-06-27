@@ -13,7 +13,6 @@ import { Action } from '../shared/models/socketEvents';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, OnDestroy {
-  videoId: string;
   playNext: Subject<{ songId: string, offset: number }> = new Subject<{ songId: string, offset: number }>();
   videoTitle = '--';
   currentRoom: Room;
@@ -47,20 +46,15 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.socketService.initSocket();
+    this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
 
-    this.activatedRoute.params.forEach((parameters: Params) => {
-      this.roomService.updateCurrentRoom(parameters['id']).subscribe(() => {
-
-        this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
-        this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
-          if (data.songId && data.offset) {
-            this.playNext.next({
-              songId: data.songId,
-              offset: data.offset
-            });
-          }
+    this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
+      if (data.songId && data.offset !== undefined) {
+        this.playNext.next({
+          songId: data.songId,
+          offset: data.offset
         });
-      });
+      }
     });
   }
 
@@ -70,12 +64,11 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   addVideo(event: string) {
     this.searchOpen = false;
-    this.videoId = event;
 
-    this.youtubeService.getVideoDetails(this.videoId).subscribe(videoDetails => {
+    this.youtubeService.getVideoDetails(event).subscribe(videoDetails => {
       this.videoTitle = this.youtubeService.getVideoTitle(videoDetails);
       const songData = {
-        songId: this.videoId,
+        songId: event,
         songTitle: this.videoTitle,
         songLength: this.youtubeService.getVideoLength(videoDetails),
         offset: 0,

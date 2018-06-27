@@ -11,7 +11,7 @@ const PLAYERS_PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_l
   styleUrls: ['./video-player.scss'],
 })
 export class VideoPlayerComponent implements OnInit {
-  @Input() playNext: Subject<{ songId: string, offset: number}>;
+  @Input() playNext: Subject<{ songId: string, offset: number }>;
 
   videoId = '8tPnX7OPo0Q';
   offset = 0;
@@ -39,7 +39,9 @@ export class VideoPlayerComponent implements OnInit {
       this.videoId = video.songId;
       this.offset = video.offset;
       this.player.loadVideoById(this.videoId);
-      this.player.playVideo();
+      setTimeout(() => {
+        this.player.playVideo();
+      });
     });
   }
 
