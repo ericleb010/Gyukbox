@@ -20,9 +20,9 @@ const Room = function Room (name) {
 		let user;
 		if (typeof song !== 'undefined' && typeof songUsers[song] !== 'undefined') {
 			user = songUsers[song];
-			songUsers.splice(songUsers.indexOf(song), 1);
+			delete songUsers[song];
 			if (typeof userSongs[user] !== 'undefined') {
-				userSongs.splice(userSongs.indexOf(user), 1);
+				delete userSongs[user];
 			}
 		}
 	}
