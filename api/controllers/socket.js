@@ -42,10 +42,6 @@ module.exports = function (server) {
 		msg.song = song;
 		msg.nextIn = song.songLength;
 
-		msg.status = 'sending';
-
-		log.debug(msg);
-
 		io.to(room.name).emit('play', song);
 
 		room.playing.timer = setTimeout(function () {
@@ -72,7 +68,7 @@ module.exports = function (server) {
 	const emitQueue = function(room, emitter) {
 		const queue = room.songList();
 
-		emitter.emit('queue', queue);
+		emitter.emit('queue', {'queue':queue});
 	};
 
 	io.on('connect', function (client) {
@@ -81,7 +77,7 @@ module.exports = function (server) {
 		let room;
 
 		client.on('join', function (data) {
-		 	log.info({'route':'socket','action':'join','data':data});
+			log.info({'route':'socket','action':'join','data':data});
 
 			if (typeof room !== 'undefined') {
 				room.removeUser(client);
@@ -97,7 +93,9 @@ module.exports = function (server) {
 			room.addUser(client);
 			client.join(room.name);
 
-			client.emit('chatList', room.chatList());
+			client.emit('chatList', room.chatList(), function (answer) {
+				log.info({'room':room,'action':'join chatlist ack','answer':answer});
+			});
 			emitQueue(room, client);
 
 			// send back video to start playing
@@ -106,7 +104,11 @@ module.exports = function (server) {
 				const song = _.cloneDeep(room.playing.song);
 				song.offset = (new Date).getTime() - room.playing.start;
 
-				client.emit('play', song);
+				client.emit('play', song, function (answer) {
+					log.info({'room':room,'action':'join play ack','answer':answer});
+				});
+
+				log.info({'msg':"SENT CURRENT PLAYING",'song':song});
 			}
 		});
 
