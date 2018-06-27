@@ -32,6 +32,12 @@ const Room = function Room (name) {
 		log.info(msg);
 	};
 
+	this.songList = function() {
+		let msg = {ROOM: "Listing all songs",	status: "success"};
+		songs.list();
+		log.info(msg);	
+	}
+
 	this.addUser = function(user) {
 		let msg = {ROOM: "Adding a user " + user, room: name,	status: "success"};
 		if (typeof user !== 'undefined') {
@@ -42,15 +48,19 @@ const Room = function Room (name) {
 		return false;
 	}
 
+	this.userList = function() {
+		let msg = {ROOM: "Listing all users",	status: "success"};
+		users.list();
+		log.info(msg);	
+	}
+
 	this.json = function() {
 		let msg = {ROOM: "returning json " + name,	status: "success"};
 		log.info(msg);
 		let room = { 
-			Room : {
-				id : this.name,
-				readableName : this.name,
-				activeUsers : 0
-			}
+			id : this.name,
+			readableName : this.name,
+			activeUsers : 0
 		}; 
 		return room;
 	}
