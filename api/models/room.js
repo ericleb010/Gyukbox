@@ -2,6 +2,7 @@
 
 const QueueFactory = require('./queue');
 const log = console;
+const MAX_SONG_LENGTH_MS = 600000;
 const MAX_CHAT_LINES = 20;
 const Room = function Room (name) {
 
@@ -31,7 +32,15 @@ const Room = function Room (name) {
 
 	this.addSong = function(user, song) {
 		let msg = {ROOM: "Adding a song " + song, room: name, user: user.id,	status: "success"};
+
 		if (typeof user !== 'undefined' && typeof song !== 'undefined') { //&& typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
+			if (song.songLength > MAX_SONG_LENGTH_MS) {
+				msg.msg = 'song too long';
+				msg.status='FAILED';
+
+				return false;
+			}
+
 			trackSongUser(song, user);
 			songs.enqueue(song);
 			log.info(msg);
