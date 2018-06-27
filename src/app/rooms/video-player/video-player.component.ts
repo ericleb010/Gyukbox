@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { YoutubeService } from '../services/youtube.service';
 
-const BASE_URL = 'https://www.youtube.com/embed/';
-const PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_policy=3&start=0&enablejsapi=1&rel=0';
+const PLAYER_BASE_URL = 'https://www.youtube.com/embed/';
+const PLAYERS_PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_policy=3&start=0&enablejsapi=1&rel=0';
 
 @Component({
   selector: 'gyukbox-video-player',
@@ -12,23 +13,20 @@ const PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_load_poli
 export class VideoPlayerComponent implements OnInit {
   @Input() videoAdded: Subject<string>;
 
-  videoId = 'ASf25UGveBQ';
-
+  videoId = '8tPnX7OPo0Q';
   YT: any;
   video: any;
   player: any;
-  videoUrl = this.buildYoutubeUrl(this.videoId);
+  videoUrl = this.buildYoutubePlayerUrl(this.videoId);
 
   constructor() { }
 
   ngOnInit() {
     this.init();
-    this.video = '1cH2cerUpMQ'; // video id
 
     window['onYouTubeIframeAPIReady'] = (e) => {
       this.YT = window['YT'];
       this.player = new window['YT'].Player('player', {
-        videoId: this.video,
         events: {
           'onStateChange': this.onPlayerStateChange.bind(this),
           'onError': this.onPlayerError.bind(this),
@@ -38,7 +36,6 @@ export class VideoPlayerComponent implements OnInit {
 
     this.videoAdded.subscribe(videoId => {
       this.videoId = videoId;
-      console.log(this.videoId);
       this.player.loadVideoById(this.videoId);
       this.player.playVideo();
     });
@@ -51,8 +48,8 @@ export class VideoPlayerComponent implements OnInit {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  buildYoutubeUrl(videoId: string) {
-    return BASE_URL + videoId + PARAMS;
+  buildYoutubePlayerUrl(videoId: string) {
+    return PLAYER_BASE_URL + videoId + PLAYERS_PARAMS;
   }
 
   onPlayerStateChange(event) {

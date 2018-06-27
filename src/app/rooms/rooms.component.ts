@@ -1,18 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { YoutubeService } from './services/youtube.service';
 
 @Component({
   selector: 'gyukbox-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent {
+export class RoomsComponent implements OnInit {
   videoId: string;
   videoAdded: Subject<string> = new Subject<string>();
-  
-  constructor() { }
+  videoTitle = '';
+
+  constructor(private youtubeService: YoutubeService) { }
+
+  ngOnInit() {
+  }
 
   addVideo() {
     this.videoAdded.next(this.videoId);
+    this.updateTitle();
+  }
+
+  private updateTitle() {
+    this.youtubeService.getVideoDetails(this.videoId).subscribe(videoDetails => {
+      this.videoTitle = this.youtubeService.getVideoTitle(videoDetails);
+    });
   }
 }

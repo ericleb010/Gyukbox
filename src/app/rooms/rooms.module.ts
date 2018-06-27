@@ -6,17 +6,23 @@ import { RoomsRoutingModule } from './rooms-routing.module';
 import { RoomsComponent } from './rooms.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { SafePipe } from '../shared/pipes/safe.pipe';
+import { YoutubeService } from './services/youtube.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    RoomsRoutingModule
+    HttpClientModule,
+    RoomsRoutingModule,
   ],
   declarations: [
     RoomsComponent,
     SafePipe,
     VideoPlayerComponent,
+  ],
+  providers: [
+    YoutubeService,
   ]
 })
 export class RoomsModule { }

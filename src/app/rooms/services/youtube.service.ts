@@ -1,7 +1,27 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
+
+import * as _ from 'lodash';
+
+const API_BASE_URL = 'https://www.googleapis.com/youtube/v3/videos?id=';
+const API_PARAMS = '&part=snippet%2CcontentDetails%2Cstatistics&key=';
 
 @Injectable()
 export class YoutubeService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getVideoDetails(videoId: string): Observable<any> {
+    return this.http.get<any>(this.buildYoutubeAPIUrl(videoId));
+  }
+
+  getVideoTitle(videoDetails: any): string {
+    return _.get(videoDetails, 'items[0].snippet.localized.title', 'No Title');
+  }
+
+  private buildYoutubeAPIUrl(videoId: string) {
+    return API_BASE_URL + videoId + API_PARAMS + environment.apiKey;
+  }
 }
