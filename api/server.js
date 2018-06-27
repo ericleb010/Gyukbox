@@ -3,12 +3,14 @@
 const http = require('http');
 const app = require('./index');
 const log = console;
+const socket = require('./controllers/socket');
 
 /*
  * Create and start HTTP server.
  */
 
 const server = http.createServer(app);
+socket(server);
 
 const port = process.env.PORT || 8080;
 

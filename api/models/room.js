@@ -3,7 +3,7 @@
 const QueueFactory = require('./queue');
 const log = console;
 const Room = function Room (name) {
-	
+
 	let songs = QueueFactory.new();
 	let users = QueueFactory.new();
 	this.name = name;
@@ -15,6 +15,8 @@ const Room = function Room (name) {
 			songs.enqueue(song);
 			return true;
 		}
+		msg.status = "FAILED";
+		log.info(msg);
 		return false;
 	};
 
@@ -32,6 +34,23 @@ const Room = function Room (name) {
 		log.info(msg);
 	};
 
+	this.removeSong = function(song) {
+		let msg = {ROOM: "Removing a song " + song, room: name,	status: "success"};
+		if (typeof song !== 'undefined' && typeof songs.remove(song) !== 'undefined') {
+			log.info(msg);
+			return true;
+		}
+		msg.status = "FAILED";
+		log.info(msg);
+		return false;
+	};
+
+	this.songList = function() {
+		let msg = {ROOM: "Listing all songs",	status: "success"};
+		songs.list();
+		log.info(msg);
+	}
+
 	this.addUser = function(user) {
 		let msg = {ROOM: "Adding a user " + user, room: name,	status: "success"};
 		if (typeof user !== 'undefined') {
@@ -39,17 +58,36 @@ const Room = function Room (name) {
 			users.enqueue(user);
 			return true;
 		}
+		msg.status = "FAILED";
+		log.info(msg);
 		return false;
+	}
+
+	this.removeUser = function(user) {
+		let msg = {ROOM: "Removing a user " + user,	status: "success"};
+		if (typeof user !== 'undefined' && typeof users.remove(user) !== 'undefined') {
+			log.info(msg);
+			return true;
+		}
+		msg.status = "FAILED";
+		log.info(msg);
+		return false;
+	}
+
+	this.userList = function() {
+		let msg = {ROOM: "Listing all users",	status: "success"};
+		users.list();
+		log.info(msg);
 	}
 
 	this.json = function() {
 		let msg = {ROOM: "returning json " + name,	status: "success"};
 		log.info(msg);
-		let room = { 
+		let room = {
 			id : this.name,
 			readableName : this.name,
-			activeUsers : 0
-		}; 
+			activeUsers : users.count(),
+		};
 		return room;
 	}
 };
