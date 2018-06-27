@@ -30,8 +30,9 @@ const Room = function Room (name) {
 
 	this.dropSong = function() {
 		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
-		songs.dequeue();
+		let song = songs.dequeue();
 		log.info(msg);
+		return song;
 	};
 
 	this.removeSong = function(song) {
