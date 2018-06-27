@@ -11,12 +11,12 @@ const Room = function Room (name) {
 	this.name = name;
 	this.timer = undefined;
 
-	trackSongUser = function(song, user) {
+	const trackSongUser = function(song, user) {
 		userSongs[user] = song;
 		songUsers[song] = user;
 	}
 
-	untrackSongUser = function(song) {
+	const untrackSongUser = function(song) {
 		let user;
 		if (typeof song !== 'undefined' && typeof songUsers[song] !== 'undefined') {
 			user = songUsers[song];
