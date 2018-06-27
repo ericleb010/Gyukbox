@@ -77,9 +77,11 @@ module.exports = function (server) {
 		client.on('addSong', function (data) {
 			log.info({'route':'socket','action':'addSong','data':data});
 
-			room.addSong(client, data);
+			if (typeof room !== 'undefined') {
+				room.addSong(client, data);
 
-			doTimer(room);
+				doTimer(room);
+			}
 		});
 
 		client.on('nextSong', function (data) {
