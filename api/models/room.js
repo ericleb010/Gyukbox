@@ -29,7 +29,7 @@ const Room = function Room (name) {
 
 	this.addSong = function(user, song) {
 		let msg = {ROOM: "Adding a song " + song, room: name, user: user,	status: "success"};
-		if (typeof user !== 'undefined' && typeof song !== 'undefined' && typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
+		if (typeof user !== 'undefined' && typeof song !== 'undefined') { //&& typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
 			trackSongUser(song, user);
 			songs.enqueue(song);
 			log.info(msg);

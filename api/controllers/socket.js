@@ -40,6 +40,7 @@ module.exports = function (server) {
 		log.debug(msg);
 
 		room.userList().forEach(function(client) {
+			log.info("TEST");
 			client.emit('play', song);
 		});
 

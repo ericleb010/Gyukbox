@@ -1,4 +1,5 @@
 'use strict';
+const _ = require('lodash');
 
 const Queue = function Queue () {
 
@@ -6,15 +7,7 @@ const Queue = function Queue () {
 
 	// copy object helper function
 	function copy(obj) {
-		let output, v, key;
-
-		output = Array.isArray(obj) ? [] : {};
-		for (key in obj) {
-			v = obj[key];
-			output[key] = (typeof v === 'object') ? copy(v) : v;
-		}
-
-		return output;
+		return _.cloneDeep(obj);
 	}
 
 	this.enqueue = function (obj) {

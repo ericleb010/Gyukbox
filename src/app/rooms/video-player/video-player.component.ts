@@ -11,7 +11,7 @@ const PLAYERS_PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_l
   styleUrls: ['./video-player.scss'],
 })
 export class VideoPlayerComponent implements OnInit {
-  @Input() videoAdded: Subject<string>;
+  @Input() playNext: Subject<string>;
 
   videoId = '8tPnX7OPo0Q';
   YT: any;
@@ -34,7 +34,7 @@ export class VideoPlayerComponent implements OnInit {
       });
     };
 
-    this.videoAdded.subscribe(videoId => {
+    this.playNext.subscribe(videoId => {
       this.videoId = videoId;
       this.player.loadVideoById(this.videoId);
       this.player.playVideo();

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as socketIo from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
+import { Action } from '../../shared/models/socketEvents';
 
 const HOST = `${environment.apiHost}:${environment.apiPort}`;
 
@@ -16,8 +17,14 @@ export class SocketService {
     this.socket = socketIo(HOST);
   }
 
-  public send(action: string, message: any): void {
+  send(action: string, message: any): void {
     this.socket.emit(action, message);
+  }
+
+  onAction(action: Action): Observable<any> {
+    return new Observable<Action>(observer => {
+      this.socket.on(action, (data: any) => observer.next(data));
+    });
   }
 
   onEvent(event: Event): Observable<any> {
