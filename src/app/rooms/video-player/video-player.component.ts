@@ -38,10 +38,7 @@ export class VideoPlayerComponent implements OnInit {
     this.playNext.subscribe(video => {
       this.videoId = video.songId;
       this.offset = video.offset;
-      this.player.loadVideoById({
-        'videoId': this.videoId,
-        'startSeconds': this.offset / 1000,
-      });
+      this.player.loadVideoById(this.videoId);
       this.player.playVideo();
     });
   }

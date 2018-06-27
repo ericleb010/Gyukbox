@@ -46,10 +46,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.socketService.initSocket();
+
     this.activatedRoute.params.forEach((parameters: Params) => {
       this.roomService.updateCurrentRoom(parameters['id']).subscribe(() => {
-        this.initializeSocket();
 
+        this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
         this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
           if (data.songId && data.offset) {
             this.playNext.next({
@@ -81,14 +83,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.socketService.send(Action.ADD_SONG, songData);
     });
   }
-  
+
   openSearch() {
     this.searchOpen = true;
-  }
-
-  private initializeSocket() {
-    this.socketService.initSocket();
-    this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
   }
 }
 
