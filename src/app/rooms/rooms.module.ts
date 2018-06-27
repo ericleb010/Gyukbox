@@ -8,6 +8,7 @@ import { RoomsComponent } from './rooms.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { YoutubeService } from './services/youtube.service';
+import { SongService } from './services/song.service';
 import { SocketService } from './services/socket.service';
 import { ChatAppletComponent } from './chat-applet/chat-applet.component';
 import { SearchComponent } from './search/search.component';
@@ -27,6 +28,7 @@ import { SearchComponent } from './search/search.component';
     SearchComponent,
   ],
   providers: [
+    SongService,
     SocketService,
     YoutubeService,
   ]

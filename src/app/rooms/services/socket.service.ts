@@ -18,12 +18,13 @@ export class SocketService {
   }
 
   send(action: string, message: any): void {
+    console.log('Trying to send: ' + action);
     this.socket.emit(action, message);
   }
 
   onAction(action: Action): Observable<any> {
     return new Observable<Action>(observer => {
-      console.log(action);
+      console.log('Receiving action: ' + action);
       this.socket.on(action, (data: any) => observer.next(data));
     });
   }

@@ -9,4 +9,5 @@ export enum Action {
     PLAY_SONG = 'play',
     CHAT_LIST = 'chatList',
     ADD_CHAT_MESSAGE = 'addChatMsg',
+    QUEUE = 'queue',
 }

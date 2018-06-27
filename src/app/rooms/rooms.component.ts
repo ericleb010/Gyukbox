@@ -6,6 +6,7 @@ import { RoomService } from '../shared/services/room.service';
 import { YoutubeService } from './services/youtube.service';
 import { SocketService } from './services/socket.service';
 import { Action } from '../shared/models/socketEvents';
+import { SongService } from './services/song.service';
 
 @Component({
   selector: 'gyukbox-rooms',
@@ -17,6 +18,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
   videoTitle = '--';
   currentRoom: Room;
   roomUpdate: Subject<Room[]>;
+  currentQueue: any[];
+  queueUpdate: Subject<any[]>;
   searchOpen = false;
 
   constructor(
@@ -25,6 +28,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     private roomService: RoomService,
     private youtubeService: YoutubeService,
     private renderer: Renderer2,
+    private songService: SongService,
   ) {
     this.renderer.addClass(document.body, 'gyukbox');
 
@@ -40,6 +44,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
       } else {
         this.currentRoom = this.roomService.currentRoom;
       }
+
+      this.songService.songQueueSubject.subscribe((list: any[]) => {
+        this.currentQueue = list;
+      });
     });
 
   }
@@ -50,6 +58,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
     this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
       if (data.songId && data.offset !== undefined) {
+        this.videoTitle = data.songTitle;
         this.playNext.next({
           songId: data.songId,
           offset: data.offset
@@ -66,10 +75,9 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.searchOpen = false;
 
     this.youtubeService.getVideoDetails(event).subscribe(videoDetails => {
-      this.videoTitle = this.youtubeService.getVideoTitle(videoDetails);
       const songData = {
         songId: event,
-        songTitle: this.videoTitle,
+        songTitle: this.youtubeService.getVideoTitle(videoDetails),
         songLength: this.youtubeService.getVideoLength(videoDetails),
         offset: 0,
       };

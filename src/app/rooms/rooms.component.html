@@ -3,7 +3,7 @@
   <h2 *ngIf="currentRoom">Room: {{currentRoom.readableName | uppercase}}</h2>
 </div>
 
-<div style="text-align: right">
+<div style="text-align: right; display: none;">
   <gyukbox-chat-applet></gyukbox-chat-applet>
 </div>
 
@@ -18,5 +18,10 @@
 </div>
 
 <button (click)="openSearch()">Add Song</button>
+<div id="queue-list">
+  <ol>
+    <li *ngFor="let song of currentQueue">{{song.songTitle}} ({{song.songLength / 60000}}:{{song.songLength % 60000}})</li>
+  </ol>
+</div>
 
 <gyukbox-search *ngIf="searchOpen" (songAdded)="addVideo($event)"></gyukbox-search>

@@ -36,11 +36,9 @@ export class ChatAppletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.roomService.roomListUpdated.subscribe(() => {
-      this.socketService.onAction(Action.CHAT_LIST).subscribe((msgs: ChatMessage[]) => {
-        this.chatList = msgs.map<ChatMessage>((msgJSON): ChatMessage => {
-          return new ChatMessage(msgJSON);
-        });
+    this.socketService.onAction(Action.CHAT_LIST).subscribe((msgs: ChatMessage[]) => {
+      this.chatList = msgs.map<ChatMessage>((msgJSON): ChatMessage => {
+        return new ChatMessage(msgJSON);
       });
     });
   }
