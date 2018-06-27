@@ -35,6 +35,15 @@ const Room = function Room (name) {
 			log.info(msg);
 			return true;
 		}
+		if (typeof user === 'undefined') {
+			msg.msg = "user undefined";
+		} else if (typeof song === 'undefined') {
+			msg.msg = "song undefined";
+		} else if (typeof userSongs[user] !== 'undefined') {
+			msg.msg = "user already has a song queued";
+		} else if (typeof songUsers[song] !== 'undefined') {
+			msg.msg = "song has already been queued";
+		}
 		msg.status = "FAILED";
 		log.info(msg);
 		return false;
