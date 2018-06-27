@@ -5,6 +5,7 @@ const log = console;
 const Room = function Room (name) {
 	
 	let songs = QueueFactory.new();
+	let users = QueueFactory.new();
 	this.name = name;
 
 	this.addSong = function(song) {
@@ -30,6 +31,16 @@ const Room = function Room (name) {
 		songs.dequeue();
 		log.info(msg);
 	};
+
+	this.addUser = function(user) {
+		let msg = {ROOM: "Adding a user " + user, room: name,	status: "success"};
+		if (typeof user !== 'undefined') {
+			log.info(msg);
+			users.enqueue(user);
+			return true;
+		}
+		return false;
+	}
 
 	this.json = function() {
 		let msg = {ROOM: "returning json " + name,	status: "success"};
