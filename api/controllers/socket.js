@@ -77,7 +77,7 @@ module.exports = function (server) {
 		client.on('addSong', function (data) {
 			log.info({'route':'socket','action':'addSong','data':data});
 
-			room.addSong(data);
+			room.addSong(client, data);
 
 			doTimer(room);
 		});
@@ -91,7 +91,9 @@ module.exports = function (server) {
 		client.on('disconnect', function(data) {
 			log.info({'route':'socket','action':'disconnect','data':data});
 
-			room.removeUser(client);
+			if (typeof room !== 'undefined') {
+				room.removeUser(client);
+			}
 		});
 	});
 };

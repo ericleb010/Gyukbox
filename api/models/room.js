@@ -6,14 +6,33 @@ const Room = function Room (name) {
 
 	let songs = QueueFactory.new();
 	let users = QueueFactory.new();
+	let userSongs = {};
+	let songUsers = {};
 	this.name = name;
 	this.timer = undefined;
 
-	this.addSong = function(song) {
-		let msg = {ROOM: "Adding a song " + song, room: name,	status: "success"};
-		if (typeof song !== 'undefined') {
-			log.info(msg);
+	trackSongUser = function(song, user) {
+		userSongs[user] = song;
+		songUsers[song] = user;
+	}
+
+	untrackSongUser = function(song) {
+		let user;
+		if (typeof song !== 'undefined' && typeof songUsers[song] !== 'undefined') {
+			user = songUsers[song];
+			songUsers.splice(songUsers.indexOf(song), 1);
+			if (typeof userSongs[user] !== 'undefined') {
+				userSongs.splice(userSongs.indexOf(user), 1);
+			}
+		}
+	}
+
+	this.addSong = function(user, song) {
+		let msg = {ROOM: "Adding a song " + song, room: name, user: user,	status: "success"};
+		if (typeof user !== 'undefined' && typeof song !== 'undefined' && typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
+			trackSongUser(song, user);
 			songs.enqueue(song);
+			log.info(msg);
 			return true;
 		}
 		msg.status = "FAILED";
@@ -22,7 +41,7 @@ const Room = function Room (name) {
 	};
 
 	this.nextSong = function() {
-		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
+		let msg = {ROOM: "Returning next song " + name,	status: "success"};
 		let song = songs.next();
 		msg.song = song;
 		log.info(msg);
@@ -32,6 +51,7 @@ const Room = function Room (name) {
 	this.dropSong = function() {
 		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
 		let song = songs.dequeue();
+		untrackSongUser(song);
 		log.info(msg);
 		return song;
 	};
@@ -39,6 +59,7 @@ const Room = function Room (name) {
 	this.removeSong = function(song) {
 		let msg = {ROOM: "Removing a song " + song, room: name,	status: "success"};
 		if (typeof song !== 'undefined' && typeof songs.remove(song) !== 'undefined') {
+			untrackSongUser(song);
 			log.info(msg);
 			return true;
 		}
