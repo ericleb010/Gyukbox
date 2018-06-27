@@ -8,6 +8,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { YoutubeService } from './services/youtube.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SocketService } from './services/socket.service';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     VideoPlayerComponent,
   ],
   providers: [
+    SocketService,
     YoutubeService,
   ]
 })
