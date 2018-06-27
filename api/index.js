@@ -2,10 +2,13 @@
 
 const express = require('express');
 const log = console.log;
+const cors = require('cors');
 const app = express();
 const router = express.Router();
 
 const rooms = require('./controllers/rooms');
+
+app.use(cors());
 
 router.get('/', function (req, res, next) {
 	res.send('Hello World!')
