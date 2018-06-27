@@ -9,7 +9,7 @@ module.exports = function (server) {
 	const io = socketio(server);
 
 	io.on('connect', function (client) {
-		log.info({'route':'socket','action':'connect','data':data});
+		log.info({'route':'socket','action':'connect','data':client});
 
 		let room;
 
