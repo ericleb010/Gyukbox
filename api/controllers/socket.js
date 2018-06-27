@@ -9,14 +9,30 @@ module.exports = function (server) {
 	const io = socketio(server);
 
 	let doTimer = function (room) {
+		let msg = {
+			'route':'socket',
+			'action':'timer',
+			'room': room.name,
+		};
+
 		if (room.timer !== 'undefined') {
+			msg.status = 'timer undefined';
+
+			log.debug(msg);
+
 			return;
 		}
 
 		song = room.dropSong();
 		if (typeof song === 'undefined') {
+			msg.status = 'no songs queued';
+
+			log.info(msg);
+
 			return;
 		}
+
+		msg.song = song;
 
 		room.userList().forEach(function(client) {
 			client.emit('play', song);
@@ -27,6 +43,13 @@ module.exports = function (server) {
 
 			doTimer(room);
 		}, song.songLength);
+
+		msg.status = 'success';
+		msg.nextIn = song.songLength;
+
+		log.info(msg);
+
+		return;
 	};
 
 	io.on('connect', function (client) {
