@@ -23,9 +23,13 @@ const Queue = function Queue () {
 		}
 	};
 
+	this.next = function () {
+		const obj = queue[0];
+		return obj;
+	};
+
 	this.dequeue = function () {
 		const obj = queue.shift();
-
 		return obj;
 	};
 

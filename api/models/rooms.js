@@ -7,7 +7,7 @@ const Rooms = function Rooms () {
 	let rooms = {};
 
 	this.add = function(name) {
-		let msg = {ROOMS: "Adding a room" + name,	status: "success"};
+		let msg = {ROOMS: "Adding a room " + name,	status: "success"};
 		if (typeof name !== 'undefined' && typeof rooms[name] === 'undefined') {
 			rooms[name] = RoomFactory.new(name);
 			log.info(msg);
@@ -19,7 +19,7 @@ const Rooms = function Rooms () {
 	};
 
 	this.get = function(name) {
-		let msg = {ROOMS: "Getting a room" + name,	status: "success"};
+		let msg = {ROOMS: "Getting a room " + name,	status: "success"};
 		if (typeof name !== 'undefined' && typeof rooms[name] !== 'undefined') {
 			log.info(msg);
 			return rooms[name];
@@ -27,11 +27,11 @@ const Rooms = function Rooms () {
 		msg.status = "FAILED";
 		log.info(msg);
 		return;
-	}
+	};
 
 	this.list = function() {
 		return this;
-	}
+	};
 
 	this.json = function() {
 		let roomlist = [];
@@ -41,7 +41,7 @@ const Rooms = function Rooms () {
 		});
 		log.info(msg);
 		return roomlist;
-	}
+	};
 }
 
 const self = new Rooms();

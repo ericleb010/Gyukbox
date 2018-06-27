@@ -8,21 +8,29 @@ const Room = function Room (name) {
 	this.name = name;
 
 	this.addSong = function(obj) {
-		let msg = {ROOM: "Adding a song" + name,	status: "success"}
+		let msg = {ROOM: "Adding a song " + name,	status: "success"};
 		if (typeof obj !== 'undefined') {
 			songs.enqueue(obj);
 			log.info(msg);
 		}
 	};
 
+	this.nextSong = function() {
+		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
+		let song = songs.next();
+		msg.song = song;
+		log.info(msg);
+		return song;
+	};
+
 	this.dropSong = function() {
-		let msg = {ROOM: "Dropping a song" + name,	status: "success"}
+		let msg = {ROOM: "Dropping a song " + name,	status: "success"};
 		songs.dequeue();
 		log.info(msg);
 	};
 
 	this.json = function() {
-		let msg = {ROOM: "returning json" + name,	status: "success"}
+		let msg = {ROOM: "returning json " + name,	status: "success"};
 		log.info(msg);
 		let room = { 
 			Room : {
