@@ -19,7 +19,7 @@ export class RoomService {
   private _roomListUpdated: Subject<Room[]> = new Subject<Room[]>();
 
   public get roomListUpdated(): Subject<Room[]> {
-    return this.roomListUpdated;
+    return this._roomListUpdated;
   }
 
   public get currentRoomList(): Room[] {

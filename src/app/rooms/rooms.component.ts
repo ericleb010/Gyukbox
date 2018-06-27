@@ -14,7 +14,7 @@ import { Action } from '../shared/models/socketEvents';
 })
 export class RoomsComponent implements OnInit {
   videoId: string;
-  playNext: Subject<string> = new Subject<string>();
+  playNext: Subject<{ songId: string, offset: number }> = new Subject<{ songId: string, offset: number }>();
   videoTitle = '--';
   currentRoom: Room;
   roomUpdate: Subject<Room[]>;
@@ -46,16 +46,19 @@ export class RoomsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeSocket();
-
     this.activatedRoute.params.forEach((parameters: Params) => {
-      this.roomService.updateCurrentRoom(parameters['id']);
-    });
+      this.roomService.updateCurrentRoom(parameters['id']).subscribe(() => {
+        this.initializeSocket();
 
-    this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
-      if (data.songId) {
-        this.playNext.next(data.songId);
-      }
+        this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
+          if (data.songId && data.offset) {
+            this.playNext.next({
+              songId: data.songId,
+              offset: data.offset
+            });
+          }
+        });
+      });
     });
   }
 
@@ -67,6 +70,7 @@ export class RoomsComponent implements OnInit {
         songId: this.videoId,
         songTitle: this.videoTitle,
         songLength: this.youtubeService.getVideoLength(videoDetails),
+        offset: 0,
       };
       this.socketService.send(Action.ADD_SONG, songData);
     });
@@ -74,6 +78,7 @@ export class RoomsComponent implements OnInit {
 
   private initializeSocket() {
     this.socketService.initSocket();
-    this.socketService.send(Action.JOIN, {room: 'test', username: '' });
+    this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
   }
 }
+

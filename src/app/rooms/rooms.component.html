@@ -3,6 +3,10 @@
   <h2 *ngIf="currentRoom">Room: {{currentRoom.readableName | uppercase}}</h2>
 </div>
 
+<div style="text-align: right">
+  <gyukbox-chat-applet></gyukbox-chat-applet>
+</div>
+
 <div style="text-align: center">
   <gyukbox-video-player
     [playNext]="playNext"

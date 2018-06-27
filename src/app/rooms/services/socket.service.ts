@@ -23,6 +23,7 @@ export class SocketService {
 
   onAction(action: Action): Observable<any> {
     return new Observable<Action>(observer => {
+      console.log(action);
       this.socket.on(action, (data: any) => observer.next(data));
     });
   }

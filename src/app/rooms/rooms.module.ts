@@ -9,6 +9,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
 import { SafePipe } from '../shared/pipes/safe.pipe';
 import { YoutubeService } from './services/youtube.service';
 import { SocketService } from './services/socket.service';
+import { ChatAppletComponent } from './chat-applet/chat-applet.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { SocketService } from './services/socket.service';
     RoomsComponent,
     SafePipe,
     VideoPlayerComponent,
+    ChatAppletComponent,
   ],
   providers: [
     SocketService,

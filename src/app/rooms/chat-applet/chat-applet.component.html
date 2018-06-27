@@ -1,0 +1,11 @@
+<div id="chat-message-group" class="background-text">
+  <div class="chat-message" *ngFor="let msg of chatList">
+    <span class="chat-user-name">{{msg.userName}}</span> (<span class="chat-date-time">{{msg.time}}</span>)
+    <div class="chat-message-text">{{msg.message}}</div>
+  </div>
+</div>
+
+<div id="chat-message-compose" class="background-text">
+  <input type="text" (ngModel)="currentChatMessage" /><br />
+  Characters Left: <span class="chat-message-char-limit">{{CHAR_LIMIT - currentChatMessage.length}}</span>&nbsp;<input type="button" (click)="addChatMessage()" value="Send" />
+</div>

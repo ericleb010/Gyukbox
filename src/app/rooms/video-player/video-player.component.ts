@@ -11,13 +11,14 @@ const PLAYERS_PARAMS = '?controls=0&disablekb=1&modestbranding=1&showinfo=0&iv_l
   styleUrls: ['./video-player.scss'],
 })
 export class VideoPlayerComponent implements OnInit {
-  @Input() playNext: Subject<string>;
+  @Input() playNext: Subject<{ songId: string, offset: number}>;
 
   videoId = '8tPnX7OPo0Q';
+  offset = 0;
   YT: any;
   video: any;
   player: any;
-  videoUrl = this.buildYoutubePlayerUrl(this.videoId);
+  videoUrl = this.buildYoutubePlayerUrl(this.videoId, this.offset);
 
   constructor() { }
 
@@ -34,9 +35,13 @@ export class VideoPlayerComponent implements OnInit {
       });
     };
 
-    this.playNext.subscribe(videoId => {
-      this.videoId = videoId;
-      this.player.loadVideoById(this.videoId);
+    this.playNext.subscribe(video => {
+      this.videoId = video.songId;
+      this.offset = video.offset;
+      this.player.loadVideoById({
+        'videoId': this.videoId,
+        'startSeconds': this.offset / 1000,
+      });
       this.player.playVideo();
     });
   }
@@ -48,7 +53,7 @@ export class VideoPlayerComponent implements OnInit {
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  buildYoutubePlayerUrl(videoId: string) {
+  buildYoutubePlayerUrl(videoId: string, offset: number) {
     return PLAYER_BASE_URL + videoId + PLAYERS_PARAMS;
   }
 
