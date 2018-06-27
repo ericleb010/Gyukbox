@@ -13,6 +13,7 @@ const HOST = `${environment.apiHost}:${environment.apiPort}`;
 @Injectable()
 export class RoomService {
 
+  public currentRoom: Room;
   private _roomList: Room[];
 
   public get currentRoomList(): Room[] {
@@ -29,5 +30,9 @@ export class RoomService {
       this._roomList = roomsJSON.map((roomJSON) => new Room(roomJSON));
       return this._roomList;
     });
+  }
+
+  public updateCurrentRoom(id: string) {
+    this.currentRoom = this._roomList.find((room) => room.id === id);
   }
 }

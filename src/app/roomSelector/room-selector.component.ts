@@ -29,6 +29,7 @@ export class RoomSelectorComponent implements OnInit {
   }
 
   public chooseRoom = function(event, id: string) {
+    this.roomService.updateCurrentRoom(id);
     this.router.navigateByUrl(`/rooms/${id}`);
   };
 }

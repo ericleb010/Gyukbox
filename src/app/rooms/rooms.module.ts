@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -24,7 +23,6 @@ import { SocketService } from './services/socket.service';
     VideoPlayerComponent,
   ],
   providers: [
-    ActivatedRoute,
     SocketService,
     YoutubeService,
   ]

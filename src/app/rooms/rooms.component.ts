@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { Room } from '../shared/models';
 import { RoomService } from '../shared/services/room.service';
@@ -21,12 +21,16 @@ export class RoomsComponent {
     private roomService: RoomService,
     private youtubeService: YoutubeService,
   ) {
-    this.activatedRoute.paramMap.subscribe(() => {
-      // TODO Check for new room IDs
-    });
+
+    this.currentRoom = this.roomService.currentRoom;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRoute.params.forEach((parameters: Params) => {
+      console.log(parameters);
+      this.roomService.updateCurrentRoom(parameters['id']);
+    });
+  }
 
   addVideo() {
     this.videoAdded.next(this.videoId);
