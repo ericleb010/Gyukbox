@@ -6,7 +6,6 @@ import { RoomService } from '../shared/services/room.service';
 import { YoutubeService } from './services/youtube.service';
 import { SocketService } from './services/socket.service';
 import { Action } from '../shared/models/socketEvents';
-import { SongService } from './services/song.service';
 
 @Component({
   selector: 'gyukbox-rooms',
@@ -28,7 +27,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
     private roomService: RoomService,
     private youtubeService: YoutubeService,
     private renderer: Renderer2,
-    private songService: SongService,
   ) {
     this.renderer.addClass(document.body, 'gyukbox');
 
@@ -44,10 +42,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
       } else {
         this.currentRoom = this.roomService.currentRoom;
       }
-
-      this.songService.songQueueSubject.subscribe((list: any[]) => {
-        this.currentQueue = list;
-      });
     });
 
   }
@@ -55,6 +49,18 @@ export class RoomsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.socketService.initSocket();
     this.socketService.send(Action.JOIN, { room: this.currentRoom, username: '' });
+
+    this.socketService.onAction(Action.QUEUE).subscribe((queueObj) => {
+      const list: any[] = queueObj.queue;
+      console.log('Received song list: ', list);
+      this.currentQueue = list.map((song) => {
+        const mins = Math.floor(song.songLength / 60000);
+        const secs = (song.songLength / 1000) % 60;
+        console.log(mins, ' ', secs);
+        song.songLength = mins + ':' + ((secs >= 10) ? '' : '0') + secs;
+        return song;
+      });
+    });
 
     this.socketService.onAction(Action.PLAY_SONG).subscribe(data => {
       if (data.songId && data.offset !== undefined) {

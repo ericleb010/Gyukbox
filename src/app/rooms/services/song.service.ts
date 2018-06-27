@@ -23,11 +23,4 @@ export class SongService {
 
   constructor(private socketService: SocketService) { }
 
-  ngOnInit() {
-    this.socketService.onAction(Action.QUEUE).subscribe((list) => {
-      console.log('Received song list: ', list);
-      this.songList = list;
-      this.songQueueSubject.publish(list);
-    });
-  }
 }

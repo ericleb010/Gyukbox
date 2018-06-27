@@ -21,7 +21,7 @@
 <button (click)="openSearch()">Add Song</button>
 <div id="queue-list">
   <ol>
-    <li *ngFor="let song of currentQueue">{{song.songTitle}} ({{song.songLength / 60000}}:{{song.songLength % 60000}})</li>
+    <li *ngFor="let song of currentQueue"><span class="background-text">{{song.songTitle}} ({{song.songLength}})</span></li>
   </ol>
 </div>
 
