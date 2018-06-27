@@ -115,7 +115,7 @@ module.exports = function (server) {
 		const roomFunctions = {
 			'addSong': function (data) {
 				room.addSong(client, data);
-				emitQueue(room, client);
+				emitQueue(room, io.to(room.name));
 				doTimer(room);
 			},
 			'disconnect': function (data) {
