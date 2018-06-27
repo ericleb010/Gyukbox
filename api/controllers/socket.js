@@ -43,6 +43,7 @@ module.exports = function (server) {
 		msg.nextIn = song.songLength;
 
 		io.to(room.name).emit('play', song);
+		emitQueue(room, io.to(room.name));
 
 		room.playing.timer = setTimeout(function () {
 			room.playing = undefined;
