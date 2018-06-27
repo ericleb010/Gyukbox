@@ -69,10 +69,10 @@ module.exports = function (server) {
 		return;
 	};
 
-	const emitQueue = function(room, client) {
-		const queue = room.json();
+	const emitQueue = function(room, emitter) {
+		const queue = room.songList();
 
-		client.emit('queue', queue);
+		emitter.emit('queue', queue);
 	};
 
 	io.on('connect', function (client) {
@@ -143,6 +143,17 @@ module.exports = function (server) {
 			room.addChatMsg(data);
 
 			io.to(room.name).emit('chatList', room.chatList());
+		});
+
+		client.on('downvote', function(data) {
+
+			if (typeof room === 'undefined') {
+				return;
+			}
+
+			room.downvote(client, data);
+
+			emitQueue(room, io.to(room.name));
 		});
 	});
 };
