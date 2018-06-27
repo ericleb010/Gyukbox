@@ -124,7 +124,7 @@ module.exports = function (server) {
 		client.on('disconnect', function(data) {
 			log.info({'route':'socket','action':'disconnect','data':data});
 
-			if (typeof room !== 'undefined') {
+			if (typeof room === 'undefined') {
 				return;
 			}
 
@@ -134,11 +134,13 @@ module.exports = function (server) {
 		client.on('addChatMsg', function (data) {
 			log.info({'route':'socket','action':'addChatMsg','data':data});
 
-			if (typeof room !== 'undefined') {
-				room.addChatMsg(data);
-
-				io.emit('chatList', room.chatList());
+			if (typeof room === 'undefined') {
+				return;
 			}
+
+			room.addChatMsg(data);
+
+			io.emit('chatList', room.chatList());
 		});
 	});
 };
