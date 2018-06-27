@@ -39,22 +39,7 @@ module.exports = function (server) {
 
 		log.debug(msg);
 
-		room.userList().forEach(function(client) {
-			const msg = {
-				'route':'socket',
-				'action':'play send',
-				'room':room.name,
-				'user':client.id,
-			};
-
-			msg.status = 'send';
-			log.debug(msg);
-
-			client.emit('play', song);
-
-			msg.status = 'success';
-			log.debug(msg);
-		});
+		io.to(room.name).emit('play', song);
 
 		room.timer = setTimeout(function () {
 			room.timer = undefined;
@@ -142,7 +127,7 @@ module.exports = function (server) {
 
 			room.addChatMsg(data);
 
-			client.broadcast.to(room.name).emit('chatList', room.chatList());
+			io.to(room.name).emit('chatList', room.chatList());
 		});
 	});
 };
