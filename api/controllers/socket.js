@@ -110,50 +110,36 @@ module.exports = function (server) {
 			}
 		});
 
-		client.on('addSong', function (data) {
-			log.info({'route':'socket','action':'addSong','data':data});
+		const roomFunctions = {
+			'addSong': function (data) {
+				room.addSong(client, data);
+				emitQueue(room, client);
+				doTimer(room);
+			},
+			'disconnect': function (data) {
+				room.removeUser(client);
+				client.leave(room.name);
+			},
+			'addChatMsg': function (data) {
+				room.addChatMsg(data);
+				io.to(room.name).emit('chatList', room.chatList());
+			},
+			'downvote': function (data) {
+				room.downvote(client, data);
+				emitQueue(room, io.to(room.name));
+			},
+		};
 
-			if (typeof room === 'undefined') {
-				return;
-			}
+		Object.keys(roomFunctions).forEach(function (action) {
+			client.on(action, function(data) {
+				log.info({'route':'socket','action':action,'data':data});
 
-			room.addSong(client, data);
-			emitQueue(room, client);
-			doTimer(room);
-		});
+				if (typeof room === 'undefined') {
+					return;
+				}
 
-		client.on('disconnect', function(data) {
-			log.info({'route':'socket','action':'disconnect','data':data});
-
-			if (typeof room === 'undefined') {
-				return;
-			}
-
-			room.removeUser(client);
-			client.leave(room.name);
-		});
-
-		client.on('addChatMsg', function (data) {
-			log.info({'route':'socket','action':'addChatMsg','data':data});
-
-			if (typeof room === 'undefined') {
-				return;
-			}
-
-			room.addChatMsg(data);
-
-			io.to(room.name).emit('chatList', room.chatList());
-		});
-
-		client.on('downvote', function(data) {
-
-			if (typeof room === 'undefined') {
-				return;
-			}
-
-			room.downvote(client, data);
-
-			emitQueue(room, io.to(room.name));
+				roomFunctions[action](data);
+			});
 		});
 	});
 };
