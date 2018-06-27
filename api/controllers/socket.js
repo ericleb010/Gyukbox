@@ -15,7 +15,7 @@ module.exports = function (server) {
 			'room': room.name,
 		};
 
-		if (room.timer !== 'undefined') {
+		if (typeof room.timer !== 'undefined') {
 			msg.status = 'timer undefined';
 
 			log.debug(msg);
