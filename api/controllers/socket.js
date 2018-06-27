@@ -77,6 +77,8 @@ module.exports = function (server) {
 			}
 
 			room.addUser(client);
+			
+			io.emit('chatList', room.chatList());
 		});
 
 		client.on('addSong', function (data) {
@@ -100,6 +102,16 @@ module.exports = function (server) {
 
 			if (typeof room !== 'undefined') {
 				room.removeUser(client);
+			}
+		});
+
+		client.on('addChatMsg', function (data) {
+			log.info({'route':'socket','action':'addChatMsg','data':data});
+
+			if (typeof room !== 'undefined') {
+				room.addChatMsg(data);
+
+				io.emit('chatList', room.chatList());
 			}
 		});
 	});

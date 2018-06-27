@@ -2,10 +2,12 @@
 
 const QueueFactory = require('./queue');
 const log = console;
+const MAX_CHAT_LINES = 20;
 const Room = function Room (name) {
 
 	let songs = QueueFactory.new();
 	let users = QueueFactory.new();
+	let chat = QueueFactory.new();
 	let userSongs = {};
 	let songUsers = {};
 	this.name = name;
@@ -123,6 +125,30 @@ const Room = function Room (name) {
 			activeUsers : users.count(),
 		};
 		return room;
+	}
+
+	this.addChatMsg = function(chatMsg) {
+		let msg = {ROOM: "Adding to chat " + chatMsg,	status: "success"};
+		if (typeof chatMsg !== 'undefined') {
+			log.info(msg);
+			chat.enqueue(chatMsg);
+			while (chat.count() > MAX_CHAT_LINES) {
+				if (typeof chat.dequeue() === 'undefined') {
+					break;
+				}
+			}
+			return true;
+		}
+		msg.status = "FAILED";
+		log.info(msg);
+		return false;
+	}
+
+	this.chatList = function() {
+		let msg = {ROOM: "Listing chat messages",	status: "success"};
+		let chatList = chat.list();
+		log.info(msg);
+		return chatList;
 	}
 };
 
