@@ -37,8 +37,9 @@ export class RoomsComponent implements OnInit {
     this.updateTitle();
   }
 
-  initializeSocket() {
+  private initializeSocket() {
     this.socketService.initSocket();
+    this.socketService.send('join', {room: 'test', username: '' });
   }
 
   private updateTitle() {

@@ -16,6 +16,10 @@ export class SocketService {
     this.socket = socketIo(HOST);
   }
 
+  public send(action: string, message: any): void {
+    this.socket.emit(action, message);
+  }
+
   onEvent(event: Event): Observable<any> {
     return new Observable<Event>(observer => {
       this.socket.on(event, () => observer.next());
