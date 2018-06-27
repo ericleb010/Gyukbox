@@ -46,11 +46,9 @@ const Room = function Room (name) {
 		let msg = {ROOM: "returning json " + name,	status: "success"};
 		log.info(msg);
 		let room = { 
-			Room : {
-				id : this.name,
-				readableName : this.name,
-				activeUsers : 0
-			}
+			id : this.name,
+			readableName : this.name,
+			activeUsers : 0
 		}; 
 		return room;
 	}
