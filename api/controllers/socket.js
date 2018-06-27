@@ -8,6 +8,27 @@ module.exports = function (server) {
 
 	const io = socketio(server);
 
+	let doTimer = function (room) {
+		if (room.timer !== 'undefined') {
+			return;
+		}
+
+		song = room.dropSong();
+		if (typeof song === 'undefined') {
+			return;
+		}
+
+		room.userList().forEach(function(client) {
+			client.emit('play', song);
+		});
+
+		room.timer = setTimeout(function () {
+			room.timer = undefined;
+
+			doTimer(room);
+		}, song.songLength);
+	};
+
 	io.on('connect', function (client) {
 		log.info({'route':'socket','action':'connect','data':client});
 
@@ -34,6 +55,8 @@ module.exports = function (server) {
 			log.info({'route':'socket','action':'addSong','data':data});
 
 			room.addSong(data);
+
+			doTimer(room);
 		});
 
 		client.on('nextSong', function (data) {

@@ -7,6 +7,7 @@ const Room = function Room (name) {
 	let songs = QueueFactory.new();
 	let users = QueueFactory.new();
 	this.name = name;
+	this.timer = undefined;
 
 	this.addSong = function(song) {
 		let msg = {ROOM: "Adding a song " + song, room: name,	status: "success"};
