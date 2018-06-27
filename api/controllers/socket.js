@@ -33,6 +33,11 @@ module.exports = function (server) {
 		}
 
 		msg.song = song;
+		msg.nextIn = song.songLength;
+
+		msg.status = 'sending';
+
+		log.debug(msg);
 
 		room.userList().forEach(function(client) {
 			client.emit('play', song);
@@ -45,7 +50,6 @@ module.exports = function (server) {
 		}, song.songLength);
 
 		msg.status = 'success';
-		msg.nextIn = song.songLength;
 
 		log.info(msg);
 
