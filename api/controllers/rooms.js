@@ -101,7 +101,7 @@ module.exports = function (router) {
 
 			msg.status = 'room not found';
 
-		} else if (!room.AddSong(song)) {
+		} else if (!room.addSong(song)) {
 			res.status(400);
 
 			msg.status = 'failure';
