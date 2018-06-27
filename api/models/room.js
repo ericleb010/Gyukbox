@@ -30,7 +30,7 @@ const Room = function Room (name) {
 	}
 
 	this.addSong = function(user, song) {
-		let msg = {ROOM: "Adding a song " + song, room: name, user: user,	status: "success"};
+		let msg = {ROOM: "Adding a song " + song, room: name, user: user.id,	status: "success"};
 		if (typeof user !== 'undefined' && typeof song !== 'undefined') { //&& typeof userSongs[user] === 'undefined' && typeof songUsers[song] === 'undefined') {
 			trackSongUser(song, user);
 			songs.enqueue(song);
@@ -87,7 +87,7 @@ const Room = function Room (name) {
 	}
 
 	this.addUser = function(user) {
-		let msg = {ROOM: "Adding a user " + user, room: name,	status: "success"};
+		let msg = {ROOM: "Adding a user " + user.id, room: name,	status: "success"};
 		if (typeof user !== 'undefined') {
 			log.info(msg);
 			users.enqueue(user);
@@ -99,7 +99,7 @@ const Room = function Room (name) {
 	}
 
 	this.removeUser = function(user) {
-		let msg = {ROOM: "Removing a user " + user,	status: "success"};
+		let msg = {ROOM: "Removing a user " + user.id,	status: "success"};
 		if (typeof user !== 'undefined' && typeof users.remove(user) !== 'undefined') {
 			log.info(msg);
 			return true;
