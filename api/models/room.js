@@ -15,6 +15,8 @@ const Room = function Room (name) {
 			songs.enqueue(song);
 			return true;
 		}
+		msg.status = "FAILED";
+		log.info(msg);
 		return false;
 	};
 
@@ -32,6 +34,17 @@ const Room = function Room (name) {
 		log.info(msg);
 	};
 
+	this.removeSong = function(song) {
+		let msg = {ROOM: "Removing a song " + song, room: name,	status: "success"};
+		if (typeof song !== 'undefined' && typeof songs.remove(song) !== 'undefined') {
+			log.info(msg);
+			return true;
+		}
+		msg.status = "FAILED";
+		log.info(msg);
+		return false;
+	};
+
 	this.songList = function() {
 		let msg = {ROOM: "Listing all songs",	status: "success"};
 		songs.list();
@@ -45,6 +58,19 @@ const Room = function Room (name) {
 			users.enqueue(user);
 			return true;
 		}
+		msg.status = "FAILED";
+		log.info(msg);
+		return false;
+	}
+
+	this.removeUser = function(user) {
+		let msg = {ROOM: "Removing a user " + user,	status: "success"};
+		if (typeof user !== 'undefined' && typeof users.remove(user) !== 'undefined') {
+			log.info(msg);
+			return true;
+		}
+		msg.status = "FAILED";
+		log.info(msg);
 		return false;
 	}
 
